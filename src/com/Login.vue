@@ -1,0 +1,150 @@
+<template>
+  <div class="login-wrap">
+    <el-form
+      class="login-form"
+      label-position="top"
+      label-width="80px"
+      :model="form"
+      :rules="rules"
+      ref="form"
+      status-icon
+    >
+      <h2>用户登录</h2>
+      <el-form-item label="用户名" prop="userloginname">
+        <el-input v-model="form.userloginname"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" type="password"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="sublogin('form')" class="login-btn">登录</el-button>
+    </el-form>
+  </div>
+</template>
+
+<script>
+import { login, getAdminInfo } from "../api/login";
+export default {
+
+  data() {
+    var valiname = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('账户不能为空'));
+      }else{
+        callback();
+      }
+    };
+
+    var valipass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('密码不能为空'));
+      }else{
+        callback();
+      }
+    };
+    return {
+      form: {
+        userloginname: "",
+        password: ""
+      },
+      rules: {
+        userloginname: [{ validator: valiname, trigger: "blur" }],
+        password: [{ validator: valipass, trigger: "blur" }]
+      }
+    };
+  },
+
+  methods: {
+    sublogin(formName) {
+      this.$refs[formName].validate(valid => {
+        //console.log(valid)
+        // 提交表单给后台进行验证是否正确
+        if (valid) {
+          //表单是否规范
+          login(this.form.userloginname, this.form.password).then(response => {
+            //发送表单后，接收验证信息
+            const resp = response.data; //响应信息
+            console.log(Response);
+
+            /* if(resp.status === 200){
+                localStorage.setItem('myview-user', JSON.stringify(resp.data))
+                this.$router.push('/home')
+                this.$message({
+                    message: resp.message,
+                    type: 'success'
+                })
+              }  */
+
+            if (resp.flag) {
+              // 验证成功, 通过token去获取用户信息
+              getAdminInfo(resp.data.token).then(response => {
+                const adminRes = response.data; //用户信息
+                if (adminRes.flag) {
+                  // 获取到了用户的数据
+                  console.log("userInfo", adminRes.data);
+                  // 1. 保存 token ，用户信息
+                  localStorage.setItem(
+                    "myview-user",
+                    JSON.stringify(adminRes.data)
+                  ); 
+                  //json解析
+                  localStorage.setItem("myview-token", resp.data.token);
+                  // 前往首页
+                  this.$router.push("/index");
+                  this.$message({
+                    message: resp.message,
+                    type: "success"
+                  });
+                } else {
+                  this.$message({
+                    message: adminRes.message,
+                    type: "warning"
+                  });
+                }
+              });
+            } else {
+              // 未通过，弹出警告
+              // alert(resp.message)
+              this.$message({
+                message: resp.message,
+                type: "warning",
+                showClose: true,
+                center: true
+              });
+            }
+          });
+        } else {
+          console.log("验证失败");
+          return false;
+        }
+      });
+    }
+  }
+};
+</script>
+<style>
+.login-wrap {
+  height: 100%;
+  display: flex; /* 弹性盒布局 */
+  justify-content: center;
+  align-items: center;
+  background: url("../assets/jk.png") no-repeat 100% 100%;
+  background-color: #303133;
+  background-size: cover;
+}
+.login-wrap .login-form {
+  margin-top: -28px;
+  width: 360px;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 30px;
+}
+.login-form h2 {
+  text-align: center;
+}
+.login-form label {
+  font-size: 18px;
+}
+.login-btn {
+  width: 100%;
+}
+</style>
