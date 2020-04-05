@@ -2,19 +2,21 @@
   <div id="name">
     <el-container class="container">
       <el-header class="header">
-        <i
-          class="el-icon-s-fold"
+        <el-button
+          class="el-icon-copy-document"
           @click="isC"
-          style="color:#fff; width:20px"
-        ></i>
+          style="background-color: #d3dce6;margin-left:-5px"
+          circle
+        ></el-button>
         <span class="left">
-          <img src="../assets/logo_2.png" />
+          <img src="../assets/lug3.png" />
           智能酒店行李管理系统
         </span>
 
         <el-dropdown @command="handleC">
           <span style="color:white;  font-size: 17px;">
-            {{ user.name }}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{ user.username }}
+            <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-edit" command="a"
@@ -29,41 +31,45 @@
 
       <el-container>
         <el-aside width="auto" class="aside">
-          <el-menu :collapse="isCollapse" class="el-menu-vertical"
-            :router="true" :default-active="$route.path">
+          <el-menu
+            :collapse="isCollapse"
+            class="el-menu-vertical"
+            :router="true"
+            :default-active="$route.path"
+          >
             <el-menu-item index="/index">
-              <i class="el-icon-s-home"></i>
+              <i class="el-icon-house"></i>
               <span slot="title">首页</span>
             </el-menu-item>
 
             <el-menu-item index="/deposit/">
               <i class="el-icon-first-aid-kit"></i>
-              <span slot="title">寄存行李</span>
+              <span slot="title">存取行李</span>
             </el-menu-item>
 
-            <el-menu-item index="/receive/">
-              <i class="el-icon-first-aid-kit"></i>
+            <!-- <el-menu-item index="/receive/">
+              <i class="el-icon-suitcase"></i>
               <span slot="title">领取行李</span>
-            </el-menu-item>
+            </el-menu-item> -->
 
             <el-menu-item index="/records/">
-              <i class="el-icon-s-order"></i>
-              <span slot="title">历史记录</span>
+              <i class="el-icon-folder-opened"></i>
+              <span slot="title">订单记录</span>
             </el-menu-item>
 
             <el-menu-item index="/person/">
-              <i class="el-icon-user-solid"></i>
+              <i class="el-icon-user"></i>
               <span slot="title">个人中心</span>
             </el-menu-item>
 
-            <el-menu-item index="/member/" v-if="user.roles !== 1" >
-              <i class="el-icon-s-custom"></i>
-              <span slot="title">行李员管理</span>
+            <el-menu-item index="/member/" ><!-- v-if="this.$store.state.roles === 1" -->
+              <i class="el-icon-user-solid"></i>
+              <span slot="title">行李员列表</span>
             </el-menu-item>
 
-            <el-menu-item index="/admin/" v-if="user.roles === 0">
+            <el-menu-item index="/admin/" ><!-- v-if="this.$store.state.roles === 1" -->
               <i class="el-icon-s-custom"></i>
-              <span slot="title">管理员管理</span>
+              <span slot="title">管理员列表</span>
             </el-menu-item>
           </el-menu>
         </el-aside>
@@ -122,6 +128,7 @@
 import { logout } from "../api/login";
 import pwdApi from "../api/pwd";
 export default {
+  name: "app",
   data() {
     // 注意:在 return 上面,而上面不能使用 逗号 , 结束
 
@@ -201,6 +208,7 @@ export default {
           //清除本地数据
           localStorage.removeItem("myview-token");
           localStorage.removeItem("myview-user");
+          this.$store.commit("setRole", "");
           this.$router.push("/login");
         } else {
           this.$message({
@@ -251,7 +259,7 @@ export default {
 /* margin: -9px -4px -35px -9px; */ /* 上 右 下 左 */
 
 .el-menu-vertical:not(.el-menu--collapse) {
-  width: 200px;
+  width: 140px;
 }
 
 .container {
@@ -269,12 +277,12 @@ export default {
   text-align: left;
   color: aliceblue;
   font-size: 18px;
+  margin-left: 30px;
 }
 .left img {
-  height: 30px;
-  width: 30px;
-  margin-bottom: -10px;
-  margin-right: 5px;
+  height: 38px;
+  width: 38px;
+  margin-bottom: -12px;
 }
 /* 下拉菜单  */
 .el-dropdown {
@@ -293,5 +301,10 @@ export default {
 .records {
   text-decoration: none;
   color: black;
+}
+
+.el-menu-item span {
+  font-size: 16px;
+  font-size: 14px;
 }
 </style>

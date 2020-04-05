@@ -1,6 +1,30 @@
 import request from "../utils/request";
 
+
+export function add(depList) {
+  return request({
+    url: "/luggage/neworderFromWeb", //"/order/add" /* '/luggage/neworder' */,
+    method: "post",
+    data: depList,
+    // headers: {
+    //   'Content-Type': 'multipart/form-data'
+    // }
+  });
+}
+
 export default {
+  //添加订单
+  add(depList) {
+    return request({
+      url: "/luggage/neworderFromWeb", //"/order/add" /* '/luggage/neworder' */,
+      method: "post",
+      data: depList,
+      // headers: {
+      //   'Content-Type': 'multipart/form-data'
+      // }
+    });
+  },
+
   //获取订单列表
   getList() {
     return request({

@@ -29,8 +29,8 @@ export default new VueRouter({
         { path: "deposit", component: Deposit },
         { path: "orderDetails", component: OrderDetails },
         { path: "records", component: Records },
-        { path: "admin", component: Admin },
-        { path: "member", component: Member },
+        { path: "admin", component: Admin, meta: 0 },
+        { path: "member", component: Member, meta: 1 },
         { path: "memDetails", component: MemDetails },
         { path: "person", component: Person },
         { path: "receive", component: Receive }

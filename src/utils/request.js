@@ -24,7 +24,9 @@ const loading = {
 };
 
 const request = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: "http://luggage.vipgz2.idcfengye.com", //'http://luggage.vipgz2.idcfengye.com',
+  /* process.env.VUE_APP_BASE_API  上线需要 */
+
   /* 'http://192.168.31.71:8080', */
   /* "http://mengxuegu.com:7300/mock/5d6a8c22facc296cd6835190" */
   timeout: 5000 //请求超时
@@ -32,11 +34,16 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
+    //config.headers["Content-Type"] = "application/x-www-form-urlencoded"; // 关键所在
     //请求拦截
     loading.open();
     if (config.method === "post") {
       config.data = qs.stringify(config.data);
     }
+    // 判断是否存在token，如果存在的话，则每个http header都加上token
+    // config.headers.authorization = localStorage.getItem("myview-token");
+    // config.headers.Authentication = store.state.token
+    console.log(config.headers.authorization + '123')
     return config;
   },
   error => {
@@ -78,7 +85,7 @@ request.interceptors.response.use(
     axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1'
 } */
 
-export const downloadTemplate = function(scheduleType) {
+/* export const downloadTemplate = function(scheduleType) {
   axios
     .get("/rest/schedule/template", {
       params: {
@@ -95,6 +102,6 @@ export const downloadTemplate = function(scheduleType) {
         fileNames[scheduleType] + "_" + response.headers.datestr + ".xls";
       link.click();
     });
-};
+}; */
 
 export default request;

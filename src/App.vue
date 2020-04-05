@@ -8,16 +8,16 @@
 export default {
   name: "app",
   data() {
-    return {
-    };
+    return {};
   },
   components: {}
 };
 </script>
 
 <style>
-
-html,body,#app {
+html,
+body,
+#app {
   height: 100%;
   font-family: "微软雅黑";
   margin: 0px auto;

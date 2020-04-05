@@ -1,55 +1,56 @@
 <template>
   <div>
     <el-card>
-      <el-button
-        type="primary"
-        icon="el-icon-user-solid"
-        circle
-        @click="reviseOrder"
-        v-if="flag"
-      >
-      </el-button>
+      <span style="float:left">
+        <el-button type="primary" icon="el-icon-user-solid" circle @click="reviseOrder" v-if="flag"></el-button>
+        <el-button type="primary" icon="el-icon-s-home" circle @click="reviseOrder" v-if="!flag"></el-button>
+      </span>
 
       <el-form :inline="true" class="in-form">
-        <el-form-item>  
+        <el-form-item>
           <el-input placeholder="行李员名字" v-if="flag" style="width: 120px"></el-input>
         </el-form-item>
-        <el-form-item>  
+
+        <el-form-item>
           <el-date-picker
             style="width: 150px"
             value-format="yyyy-MM-dd"
-            v-model="begindate"
+            
             type="date"
             placeholder="起始时间"
-           
-        ></el-date-picker>
+          ></el-date-picker>
         </el-form-item>
-        <el-form-item>  
+
+        <el-form-item>
           <el-date-picker
-          style="width: 150px"
-          value-format="yyyy-MM-dd"
-          v-model="begindate"
-          type="date"
-          placeholder="结束时间"
-         
-        ></el-date-picker>
+            style="width: 150px"
+            value-format="yyyy-MM-dd"
+            
+            type="date"
+            placeholder="结束时间"
+          ></el-date-picker>
         </el-form-item>
-        <el-form-item>  
+
+        <el-form-item>
           <el-button type="primary">查询</el-button>
         </el-form-item>
-      
-      </el-form>    
+      </el-form>
 
-      <el-button
-        type="primary"
-        icon="el-icon-s-home"
-        circle
-        @click="reviseOrder"
-        v-if="!flag"
-      >
-      </el-button>
+      <div class="index_div" v-if="!flag">
+        <span>今天总订单量：{{300}}</span>
+        <span>总寄存量：{{150}}</span>
+        <span>总领取量：{{150}}</span>
+      </div>
+      <div class="index_div" v-if="flag">
+        <span>今天个人订单量：{{300}}</span>
+        <span>个人寄存量：{{150}}</span>
+        <span>个人领取量：{{150}}</span>
+      </div>
+    </el-card>
 
-      <el-row style="margin-top:25px">
+    <el-card style="margin-top:10px">
+      <el-row style="margin-top:10px">
+        <!-- 近日寄存 -->
         <el-col :span="8">
           <ve-pie
             :data="chartData1"
@@ -61,25 +62,19 @@
           <ve-pie
             :data="chartData5"
             :settings="chartSettings1"
-            :title="title1"
+            :title="title5"
             :legend="legend1"
             v-if="flag"
           ></ve-pie>
         </el-col>
+
+        <!-- 近日领取 -->
         <el-col :span="8">
-          <ve-ring
-            :data="chartData2"
-            :title="title2"
-            :legend="legend2"
-            v-if="!flag"
-          ></ve-ring>
-          <ve-ring
-            :data="chartData6"
-            :title="title2"
-            :legend="legend2"
-            v-if="flag"
-          ></ve-ring>
+          <ve-ring :data="chartData2" :title="title2" :legend="legend2" v-if="!flag"></ve-ring>
+          <ve-ring :data="chartData6" :title="title6" :legend="legend2" v-if="flag"></ve-ring>
         </el-col>
+
+        <!-- 业务状况 -->
         <el-col :span="8">
           <ve-funnel
             :data="chartData3"
@@ -97,7 +92,11 @@
           ></ve-funnel>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 80px">
+    </el-card>
+
+    <!-- 近日存取 -->
+    <el-card style="margin-top:10px">
+      <el-row style="margin-top: 10px">
         <ve-line
           :data="chartData4"
           :settings="chartSettings4"
@@ -113,7 +112,7 @@
           :data="chartData8"
           :settings="chartSettings4"
           :extend="chartExtend"
-          :title="title4"
+          :title="title8"
           :mark-line="markLine"
           :mark-point="markPoint"
           :toolbox="toolbox"
@@ -129,7 +128,6 @@
 import dataApi from "../../api/index";
 export default {
   data() {
-
     this.legend1 = {
       left: "right",
       top: "bottom"
@@ -148,7 +146,7 @@ export default {
     };
 
     this.title1 = {
-      text: "近日寄存状况",
+      text: "近日总寄存状况",
       left: "center",
       top: "top",
       subtextStyle: {
@@ -157,7 +155,25 @@ export default {
       }
     };
     this.title2 = {
-      text: "近日领取状况",
+      text: "近日总领取状况",
+      left: "center",
+      top: "top",
+      subtextStyle: {
+        color: "#de4751",
+        fontSize: 10
+      }
+    };
+    this.title5 = {
+      text: "近日个人寄存状况",
+      left: "center",
+      top: "top",
+      subtextStyle: {
+        color: "#de4751",
+        fontSize: 10
+      }
+    };
+    this.title6 = {
+      text: "近日个人领取状况",
       left: "center",
       top: "top",
       subtextStyle: {
@@ -184,7 +200,16 @@ export default {
       }
     };
     this.title4 = {
-      text: "近日存取状况",
+      text: "近日总存取状况",
+      left: "center",
+      top: "top",
+      subtextStyle: {
+        color: "#de4751",
+        fontSize: 10
+      }
+    };
+    this.title8 = {
+      text: "近日个人存取状况",
       left: "center",
       top: "top",
       subtextStyle: {
@@ -243,13 +268,13 @@ export default {
       },
       grid: {
         right: 80,
-        begindate: '',
-        enddate: '',
+        begindate: "",
+        enddate: ""
       }
     };
 
     return {
-      flag: true,
+      flag: false,
       chartData1: {
         columns: ["date", "dateD"],
         rows: []
@@ -336,6 +361,15 @@ export default {
 };
 </script>
 <style>
+.index_div {
+  display: inline;
+  margin-left: 20px;
+  margin-top: 10px;
+  float: left;
+}
+.index_div span {
+  margin-right: 30px;
+}
 .c {
   background-color: #fff;
   background-image: url("../../assets/jk.png");
@@ -352,7 +386,7 @@ export default {
   text-align: center;
   margin: 20px 10px 10px 10px;
 }
-.in-form{
+.in-form {
   float: right;
 }
 </style>
