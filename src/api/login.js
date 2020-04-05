@@ -2,7 +2,7 @@ import request from "../utils/request";
 
 export function login(userloginname, password) {
   return request({
-    url: "/user/userLogin", //'/user/userLogin', //"/admin/login",
+    url: "http://luggage.vipgz2.idcfengye.com/user/userLogin", //'/user/userLogin', //"/admin/login",
     method: "post",
     data: {
       userloginname,
@@ -30,7 +30,7 @@ export function getAdminInfo(token) {
 
 export function getUserInfo(token) {
   return request({
-    url: `/user/getdata`,
+    url: `http://luggage.vipgz2.idcfengye.com/user/getdata`,
     method: "post",
     params: {
       token: token

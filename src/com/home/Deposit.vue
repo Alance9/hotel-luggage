@@ -31,16 +31,16 @@
         </el-form-item>
 
         <el-form-item label="性别" prop="gender">
-          <!-- <el-radio-group v-model="depList.gender">
+          <el-radio-group v-model="depList.gender">
             <el-radio-button label="男"></el-radio-button>
             <el-radio-button label="女"></el-radio-button>
-          </el-radio-group> -->
-          <el-input v-model="depList.gender" style="width:300px"></el-input>
+          </el-radio-group>
+          <!-- <el-input v-model="depList.gender" style="width:300px"></el-input> -->
         </el-form-item>
 
         <el-form-item label="行李件数" prop="number">
-          <!-- <el-input-number v-model="depList.number" :min="1" :max="100"></el-input-number> -->
-          <el-input v-model="depList.number" style="width:300px"></el-input>
+          <el-input-number v-model="depList.number" :min="1" :max="100"></el-input-number>
+          <!-- <el-input v-model="depList.number" style="width:300px"></el-input> -->
         </el-form-item>
 
         <el-form-item label="行李描述" prop="luggagedescribe">
@@ -48,15 +48,15 @@
         </el-form-item>
 
         <el-form-item label="预取日期" prop="saveforetime">
-          <el-input v-model="depList.saveforetime" style="width:300px"></el-input>
-          <!-- <el-date-picker
+          <!-- <el-input v-model="depList.saveforetime" style="width:300px"></el-input> -->
+          <el-date-picker
             v-model="depList.saveforetime"
             type="date"
             placeholder="选择预取日期"
             align="right"
             value-format="yyyy-MM-dd"
             style="width:300px"
-          ></el-date-picker> -->
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item label="行李位置" prop="location">
@@ -79,7 +79,7 @@
 
     <el-card class="rec-card" shadow="hover" style="height: 270px;">
       <!-- style="height: 830px;" -->
-      <!-- <h3>领取行李</h3>
+      <h3>领取行李</h3>
       <el-form
         class="rec-form"
         label-width="120px"
@@ -95,12 +95,12 @@
         <el-form-item>
           <el-button type="primary" style="width:330px" @click="findOrder('recForm')">领取</el-button>
         </el-form-item>
-      </el-form> -->
+      </el-form>
     </el-card>
 
     <el-card class="rec-card" shadow="hover" style="height: 400px;">
       <!-- style="height: 830px;" -->
-      <!-- <h4 style="margin-top: -10px">最近订单状况</h4>
+      <h4 style="margin-top: -10px">最近订单状况</h4>
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="联系方式" width="150"></el-table-column>
@@ -117,7 +117,7 @@
         </el-table-column>
       </el-table>
       <p></p>
-      <a href="/#/records/">查看更多订单记录 >></a> -->
+      <a href="/#/records/">查看更多订单记录 >></a>
     </el-card>
     <!-- <el-dialog title="查看订单信息" :visible.sync="dialogForm3Visible" class="rec1_dig">
       <el-form class="rec1_form" :model="form" :label-position="pos" label-width="40px">

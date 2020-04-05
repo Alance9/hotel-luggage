@@ -24,7 +24,7 @@ const loading = {
 };
 
 const request = axios.create({
-  baseURL: "http://luggage.vipgz2.idcfengye.com", //'http://luggage.vipgz2.idcfengye.com',
+  baseURL: "", //'http://luggage.vipgz2.idcfengye.com',
   /* process.env.VUE_APP_BASE_API  上线需要 */
 
   /* 'http://192.168.31.71:8080', */

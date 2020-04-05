@@ -7,13 +7,13 @@ import Login from "./com/Login.vue";
 import Home from "./com/Home.vue";
 import Records from "./com/home/Records.vue";
 import Deposit from "./com/home/Deposit.vue";
-import Receive from "./com/home/Receive";
+// import Receive from "./com/home/Receive";
 import Index from "./com/home/Index.vue";
 import Admin from "./com/home/Admin.vue";
 import Person from "./com/home/Person";
-import OrderDetails from "./com/home/OrderDetails.vue";
+// import OrderDetails from "./com/home/OrderDetails.vue";
 import Member from "./com/home/Member.vue";
-import MemDetails from "./com/home/MemDetails.vue";
+// import MemDetails from "./com/home/MemDetails.vue";
 
 /* 配置路由 */
 export default new VueRouter({
@@ -27,13 +27,13 @@ export default new VueRouter({
       children: [
         { path: "index", component: Index },
         { path: "deposit", component: Deposit },
-        { path: "orderDetails", component: OrderDetails },
+        // { path: "orderDetails", component: OrderDetails },
         { path: "records", component: Records },
         { path: "admin", component: Admin, meta: 0 },
         { path: "member", component: Member, meta: 1 },
-        { path: "memDetails", component: MemDetails },
+        // { path: "memDetails", component: MemDetails },
         { path: "person", component: Person },
-        { path: "receive", component: Receive }
+        // { path: "receive", component: Receive }
       ]
     }
   ]
