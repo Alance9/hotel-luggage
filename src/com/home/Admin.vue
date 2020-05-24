@@ -4,7 +4,7 @@
       <!-- 面包屑 -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>管理员管理</el-breadcrumb-item>
+        <el-breadcrumb-item>管理员列表</el-breadcrumb-item>
         <!-- <el-breadcrumb-item>全部</el-breadcrumb-item> -->
       </el-breadcrumb>
     </el-card>
@@ -22,7 +22,7 @@
           <el-input v-model="searchMap.phone" placeholder="联系方式"></el-input>
         </el-form-item>
 
-        <el-form-item prop="type" style="width: 100px">
+        <!-- <el-form-item prop="type" style="width: 100px">
           <el-select v-model="searchMap.type" placeholder="性别">
             <el-option
               v-for="option in orderType"
@@ -31,7 +31,7 @@
               :value="option.type"
             ></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
 
         <el-form-item prop="type" style="width: 100px">
           <el-select v-model="searchMap.type" placeholder="状态">
@@ -55,30 +55,58 @@
 
     <el-card style="margin-top: 10px">
       <!-- 列表 -->
-
-      <el-table :data="adminList" style="width: 100%" height="420" :row-class-name="tableRowClassName">
+      <el-table
+        :data="memList.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        style="width: 100%"
+        height="420"
+        :row-class-name="tableRowClassName"
+      >
         <el-table-column type="index" label="序号"></el-table-column>
 
-        <!-- <el-table-column prop="memberNum" label="编号"></el-table-column> -->
+        <!-- <el-table-column prop="memberNum" label="编号"> </el-table-column> -->
 
-        <el-table-column prop="username" label="管理员姓名"></el-table-column>
-
-        <el-table-column prop="phonenumber" label="联系号码"></el-table-column>
-
-        <el-table-column prop="sex" label="性别">
-          <template slot-scope="scope">
-            <span>{{ scope.row.sex | orderTypeFilter }}</span>
-          </template>
+        <el-table-column prop="username" label="管理员姓名">
+          <template slot-scope="scope">{{ scope.row.username }}</template>
         </el-table-column>
 
-        <el-table-column prop="userloginname" label="账号"></el-table-column>
+        <el-table-column prop="phonenumber" label="联系号码">
+          <template slot-scope="scope">{{ scope.row.phonenumber }}</template>
+        </el-table-column>
 
-        <el-table-column prop="password" label="密码"></el-table-column>
-        <el-table-column prop="state" label="状态">在职</el-table-column>
+        <el-table-column prop="hotel" label="酒店">
+          <template slot-scope="scope">{{ scope.row.hotel }}</template>
+        </el-table-column>
+
+        <!--        <el-table-column prop="sex" label="性别">-->
+        <!--          <template slot-scope="scope">-->
+        <!--            <span>{{ scope.row.sex | orderTypeFilter }}</span>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
+
+        <el-table-column prop="userloginname" label="账号">
+          <template slot-scope="scope">{{ scope.row.userloginname }}</template>
+        </el-table-column>
+
+        <!-- <el-table-column prop="password" label="密码">
+          <template slot-scope="scope">{{ scope.row.password }}</template>
+        </el-table-column> -->
+        <el-table-column prop="state" label="是否登录">
+          <template slot-scope="scope">{{ scope.row.loginstate === 1 ? "是" : "否" }}</template>
+        </el-table-column>
+
+        <el-table-column prop="state" label="状态">
+          <template slot-scope="scope">{{ scope.row.state === 1 ? "正常" : "停用" }}</template>
+        </el-table-column>
 
         <el-table-column label="操作">
-          <template>
-            <el-button type="primary" icon="el-icon-edit" plain size="small" @click="handleDetail"></el-button>
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              @click="handleDetail(scope.row)"
+              plain
+              size="small"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -96,38 +124,37 @@
     </el-card>
     <!-- 修改信息 -->
     <el-dialog title="修改管理员信息" :visible.sync="dialogFormVisible" width="400px">
-      <el-form
-        :model="form"
-        status-icon
-        ref="form"
-        label-width="100px"
-        style="width: 300px"
-      >
+      <el-form :model="form" status-icon ref="form" label-width="100px" style="width: 300px">
+        <el-form-item label="工号">{{form.id}}</el-form-item>
         <!-- status-icon 输入框反馈图标 -->
         <el-form-item label="姓名" prop="old">
-          <el-input type="input" v-model="form.name" autocomplete="off"></el-input>
+          <el-input type="input" v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-radio-group v-model="form.gender">
-            <el-radio-button label="男"></el-radio-button>
-            <el-radio-button label="女"></el-radio-button>
-          </el-radio-group>
-        </el-form-item>
+        <!--        <el-form-item label="性别">-->
+        <!--          <el-radio-group v-model="form.gender">-->
+        <!--            <el-radio-button label="男"></el-radio-button>-->
+        <!--            <el-radio-button label="女"></el-radio-button>-->
+        <!--          </el-radio-group>-->
+        <!--        </el-form-item>-->
         <el-form-item label="联系方式" prop="phone">
-          <el-input type="input" v-model="form.phone" autocomplete="off"></el-input>
+          <el-input type="input" v-model="form.phonenumber" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="账号" prop="id">
-          <el-input type="input" v-model="form.id" autocomplete="off"></el-input>
+        <el-form-item label="账号" prop="userloginname">
+          <el-input type="input" v-model="form.userloginname" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="input" v-model="form.pass" autocomplete="off"></el-input>
+          <el-input type="input" v-model="form.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="酒店" prop="hotel">
+          <el-input type="input" v-model="form.hotel" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-radio-group v-model="form.gender">
-            <el-radio-button label="在职"></el-radio-button>
-            <el-radio-button label="离职"></el-radio-button>
+          <el-radio-group v-model="form.state">
+            <el-radio-button label="1">正常</el-radio-button>
+            <el-radio-button label="0">停用</el-radio-button>
           </el-radio-group>
         </el-form-item>
+
         <el-form-item style="width:300px">
           <el-button type="primary" @click="submitF('form')">确 定</el-button>
           <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -138,50 +165,43 @@
     <!-- 添加信息 -->
     <el-dialog title="添加管理员" :visible.sync="dialogForm1Visible" width="400px">
       <el-form
-        :model="form"
+        :model="formAdd"
         status-icon
         :rules="rules"
-        ref="form"
+        ref="formAdd"
         label-width="100px"
         style="width: 300px"
       >
+        <el-form-item label="工号" prop="id">
+          <el-input type="input" v-model="formAdd.id" autocomplete="off"></el-input>
+        </el-form-item>
         <!-- status-icon 输入框反馈图标 -->
-        <el-form-item label="姓名" prop="old">
-          <el-input
-            type="input"
-            v-model="form.name"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="姓名" prop="username">
+          <el-input type="input" v-model="formAdd.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-            <el-radio-group v-model="form.gender">
-              <el-radio-button label="男"></el-radio-button>
-              <el-radio-button label="女"></el-radio-button>
-            </el-radio-group>
+        <!--        <el-form-item label="性别">-->
+        <!--          <el-radio-group v-model="form.gender">-->
+        <!--            <el-radio-button label="男"></el-radio-button>-->
+        <!--            <el-radio-button label="女"></el-radio-button>-->
+        <!--          </el-radio-group>-->
+        <!--        </el-form-item>-->
+        <el-form-item label="联系方式" prop="phonenumber">
+          <el-input type="input" v-model="formAdd.phonenumber" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式" prop="phone">
-          <el-input
-            type="input"
-            v-model="form.phone"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="登录名" prop="userloginname">
+          <el-input type="input" v-model="formAdd.userloginname" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="账号" prop="id">
-          <el-input
-            type="input"
-            v-model="form.id"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input type="input" v-model="formAdd.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pass">
-          <el-input
-            type="input"
-            v-model="form.pass"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="确认密码" prop="password2">
+          <el-input type="input" v-model="formAdd.password2" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="酒店" prop="hotel">
+          <el-input type="input" v-model="formAdd.hotel" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item style="width:300px">
-          <el-button type="primary" @click="submitF('form')">确 定</el-button>
+          <el-button type="primary" @click="submitAdd('formAdd')">确 定</el-button>
           <el-button @click="dialogFormVisible = false">取 消</el-button>
         </el-form-item>
       </el-form>
@@ -194,7 +214,7 @@
 </template>
 
 <script>
-import memberApi from "../../api/member";
+import { selectAllSuperUser, updateMember, addMember } from "../../api/member";
 //订单状态
 const orderType = [{ type: "1", name: "男" }, { type: "0", name: "女" }];
 const staticType = [{ type: "1", name: "在职" }, { type: "0", name: "离职" }];
@@ -202,31 +222,28 @@ export default {
   data() {
     return {
       list: [],
-      adminList:{
-        username: "",
-        userloginname: "",
-        password: "",
-        hotel: "",
-        phonenumber: "",
-        state: ""
-      },
+      memList: [],
       orderType: orderType, //订单状态
       bt: orderType.type,
       staticType: staticType,
-
+      dialogFormVisible: false,
+      dialogForm1Visible: false,
+      form: {},
+      formAdd: {
+        id: "",
+        username: "",
+        userloginname: "",
+        password: "",
+        password2: "",
+        hotel: "",
+        phonenumber: "",
+        right: 1 //行李员固定为1
+      },
+      rules: {},
       total: 0, //分页总记录数
       currentPage: 1, //当前
       pageSize: 10, //每页显示条数
-      dialogFormVisible: false,
-      dialogForm1Visible: false,
-      form: {
-        name: "",
-        gender: "",
-        phone: "",
-        id: "",
-        pass: "",
-        static: ""
-      },
+
       searchMap: {
         // 条件查询绑定的条件值
         phone: "",
@@ -239,11 +256,12 @@ export default {
 
   created() {
     //初始化列表
-    this.getOrderList();
+    // this.getOrderList();
+    this.getAllSuperUser();
   },
 
   methods: {
-    tableRowClassName({rowIndex }) {
+    tableRowClassName({ rowIndex }) {
       if (rowIndex % 2 === 1) {
         return "success-row";
       }
@@ -262,26 +280,122 @@ export default {
       this.currentPage = val;
       this.getOrderList();
     },
-    handleDetail() {
+
+    // 修改页面唤醒
+    handleDetail(e) {
       this.dialogFormVisible = true;
-      /* 取消后清空表单 */
-      this.$nextTick(() => {
-        this.$refs["form"].resetFields();
+      console.log(e);
+      this.form = e;
+    },
+    // 确认修改提交
+    submitF(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log("修改管理员信息确认提交");
+          console.log(this.form);
+          let info = {
+            username: this.form.username,
+            userloginname: this.form.userloginname,
+            right: this.form.userright,
+            imagebig: this.form.imagebig,
+            hotel: this.form.hotel,
+            id: this.form.id,
+            state: this.form.state,
+            phonenumber: this.form.phonenumber
+          };
+          updateMember(info).then(Response => {
+            console.log(Response);
+            if (Response.status === 200) {
+              this.$message({
+                showColse: true,
+                type: "success",
+                message: "修改管理员信息成功！"
+              });
+              this.memList = [];
+              this.getAllSuperUser();
+            } else {
+              this.$message({
+                showColse: true,
+                type: "warning",
+                message: Response.msg
+              });
+            }
+          });
+        } else {
+          return false;
+        }
       });
     },
+    // 确认添加行李员
+    submitAdd(formName) {
+      console.log("a");
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log("添加管理员");
+          let info = this.formAdd;
+          console.log(info);
+          addMember(info).then(Response => {
+            console.log(Response);
+            if (Response.status === 200) {
+              this.$message({
+                showClose: true,
+                type: "success",
+                message: "创建行成功！"
+              });
+              this.memList = [];
+              this.getAllSuperUser();
+            } else {
+              this.$message({
+                showClose: true,
+                type: "warning",
+                message: Response.msg
+              });
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    // 获取所有行李员数据
+    getAllSuperUser() {
+      selectAllSuperUser().then(Response => {
+        console.log(Response);
+        const resp = Response;
+        if (resp.status === 200) {
+          // for (let i = 0; i < resp.data.length; i++) {
+          //   if(resp.data[i].userright < 3){
+          //     console.log(resp.data[i].userright)
+          //     resp.data.splice(i,1);
+          //     i--;
+          //   }
+          // }console.log(resp.data.length)
+          this.memList = resp.data;
+          this.total = resp.data.length;
+        } else {
+          this.$message({
+            showClose: true,
+            message: resp.msg,
+            type: "warning"
+          });
+        }
+      });
+    },
+
     getOrderList() {
       /* orderApi.getList().then(Response =>{
                 const resp = Response.data
                 this.list = resp.data
                 //this.total = resp.data.total
             }) */
-      memberApi
-        .search(this.currentPage, this.pageSize, this.searchMap)
-        .then(Response => {
-          const resp = Response.data;
-          this.list = resp.data.rows;
-          this.total = resp.data.total;
-        });
+      // memberApi
+      //   .search(this.currentPage, this.pageSize, this.searchMap)
+      //   .then(Response => {
+      //     const resp = Response.data;
+      //     this.list = resp.data.rows;
+      //     this.total = resp.data.total;
+      //   });
     },
     resetForm(formName) {
       console.log("重置", formName);
@@ -290,10 +404,6 @@ export default {
     },
     handleAdd() {
       this.dialogForm1Visible = true;
-    },
-
-    reviseMem() {
-      this.$router.push("/home/memRevise");
     }
   },
 

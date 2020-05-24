@@ -73,9 +73,10 @@ export default {
               console.log("ok", resp);
               //验证成功, 通过token去获取用户信息
               localStorage.setItem("myview-token", JSON.stringify(resp.data));
+              localStorage.setItem("myview-name", this.form.userloginname);
               console.log(resp.data);
               getUserInfo(resp.data).then(response => {
-                console.log("userInfo", response);
+                console.log("userInfo1", response);
                 const adminRes = response.data; //用户信息
                 if (response.status === 200) {
                   // 获取到了用户的数据
@@ -87,18 +88,22 @@ export default {
                   );
 
                   //console.log(this.$store.state.state);
-                  //this.$store.commit('setRole',adminRes.data.state)
-                  //console.log(this.$store.state.state);
+                  // console.log(adminRes.data.right);
+                  this.$store.commit("setRole", adminRes.data.right);
+
+                  // this.$store.commit('setToken',resp.data)
+                  // console.log(this.$store.state.roles);
+                  //  console.log(this.$store.state.token);
                   //localStorage.setItem("myview-roles", JSON.stringify(adminRes.data.roles));
                   // 前往首页
                   this.$router.push("/index");
                   this.$message({
-                    message: resp.message,
+                    message: "登录成功",
                     type: "success"
                   });
                 } else {
                   this.$message({
-                    message: adminRes.message,
+                    message: "登录失败",
                     type: "warning"
                   });
                 }
@@ -144,10 +149,8 @@ export default {
               // 未通过，弹出警告
               // alert(resp.message)
               this.$message({
-                message: resp.message,
-                type: "warning",
-                showClose: true,
-                center: true
+                 message: "登录失败",
+                    type: "warning"
               });
             }
           });

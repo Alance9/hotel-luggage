@@ -19,7 +19,10 @@ export default new Vuex.Store({
   actions: {
     add1(context, n) {
       context.commit("increment", n);
-    }
+    },
+    // setRole:({commit},roles) =>{
+    //   commit('setRole',roles);
+    // }
   }, // 触发mutations里面的方法
   modules: {},
   getters: {
@@ -29,6 +32,7 @@ export default new Vuex.Store({
       } else if (state.count < 100) {
         return "大帅比周某";
       }
-    }
+    },
+    getRoles: state => state.roles
   } // 派生属性
 });

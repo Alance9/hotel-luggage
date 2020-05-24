@@ -93,7 +93,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" style="width:330px" @click="findOrder('recForm')">领取</el-button>
+          <el-button type="primary" style="width:330px" @click="findOrder('recForm')">领 取</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -119,35 +119,50 @@
       <p></p>
       <a href="/#/records/">查看更多订单记录 >></a>
     </el-card>
-    <!-- <el-dialog title="查看订单信息" :visible.sync="dialogForm3Visible" class="rec1_dig">
-      <el-form class="rec1_form" :model="form" :label-position="pos" label-width="40px">
-        <el-form-item label="编号" :label-width="formLabelWidth">00000001</el-form-item>
-        <el-form-item label="姓名" :label-width="formLabelWidth"></el-form-item>
-        <el-form-item label="性别" :label-width="formLabelWidth"></el-form-item>
-        <el-form-item label="行李件数" :label-width="formLabelWidth"></el-form-item>
-        <el-form-item label="联系方式" :label-width="formLabelWidth"></el-form-item>
-        <el-form-item label="行李描述" :label-width="formLabelWidth"></el-form-item>
 
-        <el-form-item label="预取日期" :label-width="formLabelWidth"></el-form-item>
-        <el-form-item style="display:inline;">
-          <el-col :span="10" :label-width="formLabelWidth" style="margin-left:-40px">寄存天数：</el-col>
-          <el-col :span="10">状态：</el-col>
+    <!-- 查看订单 -->
+    <el-dialog title="查看订单信息" :visible.sync="dialogFormVisible">
+      <el-form :model="recList" :label-position="pos" label-width="60px">
+        <!-- <el-form-item label="编号" :label-width="formLabelWidth"></el-form-item> -->
+        <el-form-item style="margin-left:-40px;margin-top:-30px">
+          <el-row>姓名：{{recList.savername}}</el-row>
+          <el-row>性别：{{recList.savergender}}</el-row>
+          <el-row>联系方式：{{recList.phonenumber}}</el-row>
+          <el-row>验证码：{{recList.getcode}}</el-row>
+          <el-row v-if="recList.getcode">短信状态：已发送</el-row>
+          <el-row v-else>短信状态：未发送</el-row>
+       
+          <el-row>行李件数：{{recList.number}}</el-row>
+          <el-row>行李描述：{{recList.describe}}</el-row>
+          <el-row>行李位置：{{recList.location}}</el-row>
+          <el-row>行李标签：{{recList.tag}}</el-row>
+          <el-row>酒店：{{recList.hotel}}</el-row>
+          <el-row v-if="recList.istoken">状态：已领取</el-row>
+          <el-row v-else>状态：未领取</el-row>
         </el-form-item>
-        <el-form-item style="display:inline">
-          <el-col :span="10" :label-width="formLabelWidth" style="margin-left:-40px">寄存人员：</el-col>
-          <el-col :span="10">领取人员：</el-col>
+
+        <el-form-item style="margin-left:-40px">
+          <el-row>寄存时间：{{recList.savetime}}</el-row>
+          <el-row>预取时间：{{recList.saveforetime}}</el-row>
+          <el-row v-if="recList.gettime">领取时间：{{recList.gettime}}</el-row>
+          <el-row v-else>领取时间：未知</el-row>
+          <el-row>寄存者：{{recList.receivername}}</el-row>
+          <el-row v-if="recList.istoken">领取者：{{recList.giverName}}</el-row>
+          <el-row v-else>领取者：暂无</el-row>
         </el-form-item>
       </el-form>
-      <div slot="footer">
-        <el-button type="primary" @click="dialogForm3Visible = false">关 闭</el-button>
+      <div slot="footer" style="margin-top:-30px">
+        <el-button type="primary" @click="recieveOrder(recList.getcode)" v-if="!recList.istoken">领 取</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">关 闭</el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
 // import { add1 } from "../../api/addOrder";
-import { add } from "../../api/order";
+import { add, getluggage } from "../../api/order";
+
 export default {
   data() {
     var valisname = (rule, value, callback) => {
@@ -179,56 +194,69 @@ export default {
       num: 1,
       pos: "left",
       reDate: "",
-      dialogForm3Visible: false,
-      pojo: {
-        savername: "",
-        gender: "",
-        phonenumber: "",
-        number: "",
-        luggagedescribe: "",
-        savetime: new Date(),
-        saveforetime: "",
-        hotel: "",
-        recievername: "",
-        location: "",
-        tag: "",
-        picture: null
-      },
+      dialogFormVisible: false,
+      // pojo: {
+      //   savername: "",
+      //   gender: "",
+      //   phonenumber: "",
+      //   number: "",
+      //   luggagedescribe: "",
+      //   savetime: new Date(),
+      //   saveforetime: "",
+      //   hotel: "",
+      //   recievername: "",
+      //   location: "",
+      //   tag: "",
+      //   picture: null
+      // },
       depList: {
         savername: "",
-        gender: "",
+        gender: "男",
         phonenumber: "",
         recievername: JSON.parse(localStorage.getItem("myview-user")).username,
-        hotel: "",
+        hotel: JSON.parse(localStorage.getItem("myview-user")).hotel,
         luggagedescribe: "",
         saveforetime: "",
         number: "",
         location: "",
         tag: ""
       },
+      recList: [],
+      // {
+      //   savername: "",
+      //   phonenumber: "",
+      //   receivername: "",
+      //   savergender: "",
+      //   hotel: "",
+      //   describe: "",
+      //   picture: "",
+      //   location: "",
+      //   tag: "",
+      //   savetime: ""
+      // },
       rec: {
         sid: ""
       },
       tableData: [
         {
-          name: "王小虎",
+          name: "zfh",
           phone: "13613797431",
           num: 1,
-          des_p: "张晓",
+          des_p: "superuser",
+          static: "已领取"
+        },
+        {
+          name: "zfh",
+          phone: "13613797431",
+          num: 1,
+          des_p: "superuser",
           static: "未领取"
         },
         {
-          name: "王小虎",
+          name: "1",
           phone: "13613797431",
-          num: 2,
-          des_p: "张晓",
-          static: "未领取"
-        },
-        {
-          name: "王小虎",
-          phone: "13613797431",
-          num: 3,
-          des_p: "张晓",
+          num: 1,
+          des_p: "superuser",
           static: "未领取"
         }
       ],
@@ -241,53 +269,81 @@ export default {
     };
   },
 
+  created() {},
+
   methods: {
-    /* findOrder(formName) {
+    //查找订单
+    findOrder(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log("查找订单");
-          add(this.pojo).then(Response => {
+          let info = {
+            getcode: this.rec.sid,
+            state: 0,
+            giver: ""
+          };
+          getluggage(info).then(Response => {
             const resp = Response.data;
-            console.log(resp.data);
-            if (resp.flag) {
-              this.$message({
-                showClose: true,
-                message: "查找订单失败！",
-                type: "error"
-              });
-
-              // this.$router.push("/orderDetails");
-            } else {
-              this.$message({
-                message: resp.message,
-                type: "warning"
-              });
-            }
+            this.recList = resp.data;
+            this.dialogFormVisible = true;
           });
         } else {
           return false;
         }
       });
-    }, */
+    },
+
+    //领取订单
+    recieveOrder(code) {
+      console.log("领取订单");
+      // let localUserInfo = Object.values(window.localStorage)[0];
+      // let userInfo = JSON.parse(localUserInfo);
+      let info = {
+        getcode: code,
+        state: 1,
+        giver: JSON.parse(localStorage.getItem("myview-user")).username
+      };
+      console.log(info);
+      getluggage(info).then(Response => {
+        console.log(Response);
+        const resp = Response.data;
+        if (resp.status === 200) {
+          this.$message({
+            showClose: true,
+            message: "领取行李成功！",
+            type: "success"
+          });
+          this.dialogFormVisible = false;
+        } else {
+          this.$message({
+            message: resp.msg,
+            type: "warning"
+          });
+        }
+      });
+    },
+
+    // 添加订单
     addOrder(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log("添加订单");
+          console.log(this.depList);
+
           add(this.depList).then(Response => {
-            console.log("1")
             const resp = Response.data;
-            console.log(resp.data);
-            if (status == 200) {
+            console.log(resp);
+            if (resp.status == 200) {
               this.$message({
                 showClose: true,
-                message: "创建订单成功！",
+                message: "创建订单成功！验证码为: " + resp.data,
                 type: "success"
               });
 
+              // this.$refs[formName].resetFields();
               // this.$router.push("/orderDetails");
             } else {
               this.$message({
-                message: resp.message,
+                message: resp.msg,
                 type: "warning"
               });
             }
@@ -304,9 +360,11 @@ export default {
 .dis {
   height: 100%;
 }
+
 .ca {
   background-color: #fff;
 }
+
 .des-card {
   margin-top: 10px;
   width: 49%;
@@ -315,6 +373,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .des-card h3 {
   text-align: center;
 }
@@ -327,33 +386,41 @@ export default {
   align-items: center;
   float: right;
 }
+
 .rec-card h3,
 h4 {
   text-align: center;
 }
+
 .des-form {
   height: 580px;
   border-radius: 10px;
 }
+
 .rec-form {
   border-radius: 10px;
   margin-left: -100px;
 }
+
 .rec-card a {
   color: #1c8af8;
   text-decoration-line: none;
 }
+
 .rec-card a:hover {
   color: #1667b8;
   text-decoration-line: none;
 }
+
 .input {
   width: 300px;
 }
+
 .rec1_form {
   height: 500px;
   margin-left: 100px;
 }
+
 .rec1_dig {
   display: flex; /* 弹性盒布局 */
   justify-content: center;

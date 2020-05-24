@@ -2,6 +2,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+// 解决重复点击导航路由报错
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+};
+
 /* 创建组件 */
 import Login from "./com/Login.vue";
 import Home from "./com/Home.vue";
@@ -29,8 +35,8 @@ export default new VueRouter({
         { path: "deposit", component: Deposit },
         // { path: "orderDetails", component: OrderDetails },
         { path: "records", component: Records },
-        { path: "admin", component: Admin, meta: 0 },
-        { path: "member", component: Member, meta: 1 },
+        { path: "admin", component: Admin, meta: 3 },
+        { path: "member", component: Member, meta: 2 },
         // { path: "memDetails", component: MemDetails },
         { path: "person", component: Person },
         // { path: "receive", component: Receive }
@@ -38,6 +44,7 @@ export default new VueRouter({
     }
   ]
 });
+
 
 /*  
   { path: "orderDetails", component: OrderDetails },

@@ -20,6 +20,7 @@ import "./permission";
 /* Vue.config.productionTip = process.env.NODE_ENV === "production";
 console.log(process.env.VUE_APP_SERVICE_URL); */
 
+
 new Vue({
   router,
   store,

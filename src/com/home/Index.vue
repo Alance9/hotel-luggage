@@ -219,7 +219,7 @@ export default {
     };
 
     this.chartSettings1 = {
-      level: [["10/01", "10/02"], ["10/03", "10/04", "10/05", "10/06", "10/07"]]
+      level: [["03/01", "03/02"], ["03/03", "03/04", "03/05", "03/06", "03/07"]]
     };
     this.chartSettings3 = {
       sequence: ["总订单", "已领取", "未领取"]
@@ -372,7 +372,7 @@ export default {
 }
 .c {
   background-color: #fff;
-  background-image: url("../../assets/jk.png");
+  /* background-image: url("../../assets/jk.png"); */
 }
 .el-card {
   padding: 0px;

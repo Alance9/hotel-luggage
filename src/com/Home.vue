@@ -19,12 +19,8 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-edit" command="a"
-              >修改密码</el-dropdown-item
-            >
-            <el-dropdown-item icon="el-icon-switch-button" command="b"
-              >退出登录</el-dropdown-item
-            >
+            <el-dropdown-item icon="el-icon-edit" command="a">修改密码</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button" command="b">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -50,7 +46,7 @@
             <!-- <el-menu-item index="/receive/">
               <i class="el-icon-suitcase"></i>
               <span slot="title">领取行李</span>
-            </el-menu-item> -->
+            </el-menu-item>-->
 
             <el-menu-item index="/records/">
               <i class="el-icon-folder-opened"></i>
@@ -62,12 +58,14 @@
               <span slot="title">个人中心</span>
             </el-menu-item>
 
-            <el-menu-item index="/member/" ><!-- v-if="this.$store.state.roles === 1" -->
+            <el-menu-item index="/member/" v-if="user.right > 1">
+              <!--  -->
               <i class="el-icon-user-solid"></i>
               <span slot="title">行李员列表</span>
             </el-menu-item>
 
-            <el-menu-item index="/admin/" ><!-- v-if="this.$store.state.roles === 1" -->
+            <el-menu-item index="/admin/" v-if="user.right > 2">
+              <!--  -->
               <i class="el-icon-s-custom"></i>
               <span slot="title">管理员列表</span>
             </el-menu-item>
@@ -79,11 +77,7 @@
       </el-container>
 
       <!-- 修改密码 -->
-      <el-dialog
-        title="修改密码"
-        :visible.sync="dialogFormVisible"
-        width="400px"
-      >
+      <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
         <el-form
           :model="form"
           status-icon
@@ -94,28 +88,16 @@
         >
           <!-- status-icon 输入框反馈图标 -->
           <el-form-item label="原密码" prop="old">
-            <el-input
-              type="password"
-              v-model="form.old"
-              autocomplete="off"
-            ></el-input>
+            <el-input type="password" v-model="form.old" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="新密码" prop="pass">
-            <el-input
-              type="password"
-              v-model="form.pass"
-              autocomplete="off"
-            ></el-input>
+            <el-input type="password" v-model="form.pass" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="check">
-            <el-input
-              type="password"
-              v-model="form.check"
-              autocomplete="off"
-            ></el-input>
+            <el-input type="password" v-model="form.check" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item style="width:300px">
-            <el-button type="primary" @click="submitF('form')">确 定</el-button>
+            <el-button type="primary" @click="submitPass('form')">确 定</el-button>
             <el-button @click="dialogFormVisible = false">取 消</el-button>
           </el-form-item>
         </el-form>
@@ -125,8 +107,8 @@
 </template>
 
 <script>
-import { logout } from "../api/login";
-import pwdApi from "../api/pwd";
+import { loginout, newPass } from "../api/login";
+// import pwdApi from "../api/pwd";
 export default {
   name: "app",
   data() {
@@ -134,19 +116,11 @@ export default {
 
     //自定义校验
     const validateOld = (rule, value, callback) => {
-      pwdApi.check(this.user.id, value).then(Response => {
-        const resp = Response.data;
-        if (value === "") {
-          callback(new Error("原密码不能为空"));
-        }
-        setTimeout(() => {
-          if (resp.flag) {
-            callback();
-          } else {
-            callback(new Error(resp.message));
-          }
-        }, 1000);
-      });
+      if (value === "") {
+        callback(new Error("原密码不能为空"));
+      } else {
+        callback();
+      }
     };
 
     const validatePass = (rule, value, callback) => {
@@ -202,17 +176,25 @@ export default {
     },
 
     handleLogout() {
-      logout(localStorage.getItem("myview-token")).then(Response => {
+      console.log(JSON.parse(localStorage.getItem("myview-user")).username);
+      loginout(localStorage.getItem("myview-name")).then(Response => {
         const resp = Response.data;
-        if (resp.flag) {
+        // console.log(resp);
+        if (resp.status == 200) {
           //清除本地数据
           localStorage.removeItem("myview-token");
           localStorage.removeItem("myview-user");
+          localStorage.removeItem("myview-name");
           this.$store.commit("setRole", "");
           this.$router.push("/login");
+          this.$message({
+            message: resp.data,
+            type: "success",
+            duration: 1000 //弹框停留时间
+          });
         } else {
           this.$message({
-            message: resp.message,
+            message: "登出错误",
             type: "error",
             duration: 1000 //弹框停留时间
           });
@@ -227,19 +209,31 @@ export default {
         this.$refs["form"].resetFields();
       });
     },
-    submitF(formName) {
+    submitPass(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log("校验成功");
-          pwdApi.update(this.user.id, this.form.check).then(Response => {
+          let info = {
+            userloginname: localStorage.getItem("myview-name"),
+            password: this.form.old,
+            newpassword: this.form.pass
+          };
+          console.log(info);
+          newPass(info).then(Response => {
+            console.log(Response);
             const resp = Response.data;
-            this.$message({
-              message: resp.message,
-              type: resp.flag ? "success" : "warning"
-            });
-            if (resp.flag) {
-              this.handleLogout();
+            if (resp.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "修改密码成功！",
+                type: "success"
+              });
               this.dialogFormVisible = false;
+            } else {
+              this.$message({
+                message: resp.msg,
+                type: "warning"
+              });
             }
           });
         } else {

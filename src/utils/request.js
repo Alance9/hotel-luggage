@@ -10,7 +10,7 @@ const loading = {
     if (this.loadingInstance === null) {
       this.loadingInstance = Loading.service({
         target: ".main",
-        text: "QAQ加载中，主人请稍等"
+        text: "正在加载中，请稍等..."
         /* background: 'rgba(0, 0, 0, 0.5)' */
       });
     }
@@ -43,7 +43,7 @@ request.interceptors.request.use(
     // 判断是否存在token，如果存在的话，则每个http header都加上token
     // config.headers.authorization = localStorage.getItem("myview-token");
     // config.headers.Authentication = store.state.token
-    console.log(config.headers.authorization + '123')
+    // console.log(config.headers.authorization + '123')
     return config;
   },
   error => {
@@ -60,13 +60,13 @@ request.interceptors.response.use(
     }, 500);
     const resp = response.data;
 
-    if (resp.code !== 2000) {
-      Message({
-        message: resp.message || "获取数据失败",
-        type: "warning",
-        duration: 5 * 1000
-      });
-    }
+    // if (resp.status !== 200) {
+    //   Message({
+    //     message: resp.msg || "获取数据失败",
+    //     type: "warning",
+    //     duration: 5 * 1000
+    //   });
+    // }
     return response;
   },
   error => {

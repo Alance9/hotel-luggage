@@ -4,14 +4,16 @@
     记得在main.js中导入
 */
 import router from "./router";
-import { getAdminInfo } from "./api/login";
+import { getUserInfo } from "./api/login";
+import store from "./utils/store";
 
 //to ,即将进入的目标路由对象
 //from ,即将要离开的路由对象
 //next ,是一个方法，可以指定路由地址，进行路由跳转
+
 router.beforeEach((to, form, next) => {
   //获取token
-  const token = localStorage.getItem("myview-token");
+  const token = JSON.parse(localStorage.getItem("myview-token"));
   //没有token
   if (!token) {
     //如果访问其他页面，则跳转login
@@ -30,11 +32,12 @@ router.beforeEach((to, form, next) => {
       if (user) {
         next();
       } else {
-        getAdminInfo(token).then(Response => {
+        getUserInfo(token).then(Response => {
           const resp = Response.data;
           //没有用户信息，则获取保存
-          if (resp.flag) {
+          if (Response.status === 200) {
             localStorage.setItem("myview-user", JSON.stringify(resp.data));
+            store.commit("setRole", resp.data.right);
             next();
           } else {
             //未获取，则重新登录
