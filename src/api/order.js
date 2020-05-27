@@ -78,7 +78,7 @@ export function searchOrder1(info) {
     //   'Content-Type': 'multipart/form-data'
     // }
   });
-};
+}
 
 // 验证码搜索
 export function searchOrder2(info) {
@@ -90,7 +90,7 @@ export function searchOrder2(info) {
     //   'Content-Type': 'multipart/form-data'
     // }
   });
-};
+}
 
 // 联系方式搜索
 export function searchOrder3(info) {
@@ -102,4 +102,4 @@ export function searchOrder3(info) {
     //   'Content-Type': 'multipart/form-data'
     // }
   });
-};
+}

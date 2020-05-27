@@ -2,20 +2,35 @@
   <div>
     <el-card>
       <span style="float:left">
-        <el-button type="primary" icon="el-icon-user-solid" circle @click="reviseOrder" v-if="flag"></el-button>
-        <el-button type="primary" icon="el-icon-s-home" circle @click="reviseOrder" v-if="!flag"></el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-user-solid"
+          circle
+          @click="reviseOrder"
+          v-if="flag"
+        ></el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-s-home"
+          circle
+          @click="reviseOrder"
+          v-if="!flag"
+        ></el-button>
       </span>
 
       <el-form :inline="true" class="in-form">
         <el-form-item>
-          <el-input placeholder="行李员名字" v-if="flag" style="width: 120px"></el-input>
+          <el-input
+            placeholder="行李员名字"
+            v-if="flag"
+            style="width: 120px"
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
           <el-date-picker
             style="width: 150px"
             value-format="yyyy-MM-dd"
-            
             type="date"
             placeholder="起始时间"
           ></el-date-picker>
@@ -25,7 +40,6 @@
           <el-date-picker
             style="width: 150px"
             value-format="yyyy-MM-dd"
-            
             type="date"
             placeholder="结束时间"
           ></el-date-picker>
@@ -37,14 +51,14 @@
       </el-form>
 
       <div class="index_div" v-if="!flag">
-        <span>今天总订单量：{{300}}</span>
-        <span>总寄存量：{{150}}</span>
-        <span>总领取量：{{150}}</span>
+        <span>今天总订单量：{{ 300 }}</span>
+        <span>总寄存量：{{ 150 }}</span>
+        <span>总领取量：{{ 150 }}</span>
       </div>
       <div class="index_div" v-if="flag">
-        <span>今天个人订单量：{{300}}</span>
-        <span>个人寄存量：{{150}}</span>
-        <span>个人领取量：{{150}}</span>
+        <span>今天个人订单量：{{ 300 }}</span>
+        <span>个人寄存量：{{ 150 }}</span>
+        <span>个人领取量：{{ 150 }}</span>
       </div>
     </el-card>
 
@@ -70,8 +84,18 @@
 
         <!-- 近日领取 -->
         <el-col :span="8">
-          <ve-ring :data="chartData2" :title="title2" :legend="legend2" v-if="!flag"></ve-ring>
-          <ve-ring :data="chartData6" :title="title6" :legend="legend2" v-if="flag"></ve-ring>
+          <ve-ring
+            :data="chartData2"
+            :title="title2"
+            :legend="legend2"
+            v-if="!flag"
+          ></ve-ring>
+          <ve-ring
+            :data="chartData6"
+            :title="title6"
+            :legend="legend2"
+            v-if="flag"
+          ></ve-ring>
         </el-col>
 
         <!-- 业务状况 -->

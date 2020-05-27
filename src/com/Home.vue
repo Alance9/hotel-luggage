@@ -19,8 +19,12 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-edit" command="a">修改密码</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-switch-button" command="b">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-edit" command="a"
+              >修改密码</el-dropdown-item
+            >
+            <el-dropdown-item icon="el-icon-switch-button" command="b"
+              >退出登录</el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -77,7 +81,11 @@
       </el-container>
 
       <!-- 修改密码 -->
-      <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
+      <el-dialog
+        title="修改密码"
+        :visible.sync="dialogFormVisible"
+        width="400px"
+      >
         <el-form
           :model="form"
           status-icon
@@ -88,16 +96,30 @@
         >
           <!-- status-icon 输入框反馈图标 -->
           <el-form-item label="原密码" prop="old">
-            <el-input type="password" v-model="form.old" autocomplete="off"></el-input>
+            <el-input
+              type="password"
+              v-model="form.old"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
           <el-form-item label="新密码" prop="pass">
-            <el-input type="password" v-model="form.pass" autocomplete="off"></el-input>
+            <el-input
+              type="password"
+              v-model="form.pass"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="check">
-            <el-input type="password" v-model="form.check" autocomplete="off"></el-input>
+            <el-input
+              type="password"
+              v-model="form.check"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
           <el-form-item style="width:300px">
-            <el-button type="primary" @click="submitPass('form')">确 定</el-button>
+            <el-button type="primary" @click="submitPass('form')"
+              >确 定</el-button
+            >
             <el-button @click="dialogFormVisible = false">取 消</el-button>
           </el-form-item>
         </el-form>

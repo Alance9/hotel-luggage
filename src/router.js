@@ -38,13 +38,12 @@ export default new VueRouter({
         { path: "admin", component: Admin, meta: 3 },
         { path: "member", component: Member, meta: 2 },
         // { path: "memDetails", component: MemDetails },
-        { path: "person", component: Person },
+        { path: "person", component: Person }
         // { path: "receive", component: Receive }
       ]
     }
   ]
 });
-
 
 /*  
   { path: "orderDetails", component: OrderDetails },

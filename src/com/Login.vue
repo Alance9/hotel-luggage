@@ -20,13 +20,15 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="sublogin('form')" class="login-btn">登录</el-button>
+      <el-button type="primary" @click="sublogin('form')" class="login-btn"
+        >登录</el-button
+      >
     </el-form>
   </div>
 </template>
 
 <script>
-import { login, getAdminInfo, getUserInfo } from "../api/login"; //, getUserInfo
+import { login, getUserInfo } from "../api/login"; //, getUserInfo
 export default {
   data() {
     var valiname = (rule, value, callback) => {
@@ -149,8 +151,8 @@ export default {
               // 未通过，弹出警告
               // alert(resp.message)
               this.$message({
-                 message: "登录失败",
-                    type: "warning"
+                message: "登录失败",
+                type: "warning"
               });
             }
           });

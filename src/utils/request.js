@@ -58,7 +58,7 @@ request.interceptors.response.use(
     setTimeout(() => {
       loading.close();
     }, 500);
-    const resp = response.data;
+    //const resp = response.data;
 
     // if (resp.status !== 200) {
     //   Message({

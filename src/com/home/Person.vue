@@ -20,16 +20,24 @@
     <el-card class="per-card" style="width: 40%;">
       <el-col :span="12" class="per_form">
         <el-form :label-position="pos">
-          <el-form-item label="账号:">{{user.id}}</el-form-item>
+          <el-form-item label="账号:">{{ user.id }}</el-form-item>
 
-          <el-form-item label="姓名:" class="input" prop="name">{{ user.username }}</el-form-item>
+          <el-form-item label="姓名:" class="input" prop="name">{{
+            user.username
+          }}</el-form-item>
 
           <!-- <el-form-item label="性别:">女</el-form-item> -->
 
-          <el-form-item label="联系方式:" class="input">{{ user.phonenumber }}</el-form-item>
+          <el-form-item label="联系方式:" class="input">{{
+            user.phonenumber
+          }}</el-form-item>
 
-          <el-form-item label="身份:" v-if="user.right === 3">超级管理员</el-form-item>
-          <el-form-item label="身份:" v-else-if="user.right === 2">管理员</el-form-item>
+          <el-form-item label="身份:" v-if="user.right === 3"
+            >超级管理员</el-form-item
+          >
+          <el-form-item label="身份:" v-else-if="user.right === 2"
+            >管理员</el-form-item
+          >
           <el-form-item label="身份:" v-else>行李员</el-form-item>
         </el-form>
       </el-col>
@@ -43,21 +51,32 @@
             type="primary"
             style="width: 250px;margin-left:-20px;"
             @click="handleDetail"
-          >修改信息</el-button>
+            >修改信息</el-button
+          >
           <p></p>
-          <el-button type="primary" style="width: 250px;margin-left:-20px;" @click="handlePWD">修改密码</el-button>
+          <el-button
+            type="primary"
+            style="width: 250px;margin-left:-20px;"
+            @click="handlePWD"
+            >修改密码</el-button
+          >
           <p></p>
           <el-button
             type="primary"
             style="width: 250px;margin-left:-20px;"
             @click="handleLogout"
-          >退出登录</el-button>
+            >退出登录</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
 
     <!-- 修改信息 -->
-    <el-dialog title="修改信息" :visible.sync="dialogForm1Visible" width="400px">
+    <el-dialog
+      title="修改信息"
+      :visible.sync="dialogForm1Visible"
+      width="400px"
+    >
       <el-form
         :model="form1"
         status-icon
@@ -68,7 +87,11 @@
       >
         <!-- status-icon 输入框反馈图标 -->
         <el-form-item label="姓名" prop="old">
-          <el-input type="input" v-model="form1.name" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form1.name"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <!-- <el-form-item label="性别">
           <el-radio-group v-model="form1.gender">
@@ -77,7 +100,11 @@
           </el-radio-group>
         </el-form-item>-->
         <el-form-item label="联系方式" prop="phone">
-          <el-input type="input" v-model="form1.phone" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form1.phone"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item style="width:300px">
           <el-button type="primary" @click="submitF('form')">确 定</el-button>
@@ -88,19 +115,39 @@
 
     <!-- 修改密码        status-icon -->
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px" style="width: 300px">
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="form"
+        label-width="100px"
+        style="width: 300px"
+      >
         <!-- status-icon 输入框反馈图标 -->
         <el-form-item label="原密码" prop="old">
-          <el-input type="password" v-model="form.old" autocomplete="off"></el-input>
+          <el-input
+            type="password"
+            v-model="form.old"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="pass">
-          <el-input type="password" v-model="form.pass" autocomplete="off"></el-input>
+          <el-input
+            type="password"
+            v-model="form.pass"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="check">
-          <el-input type="password" v-model="form.check" autocomplete="off"></el-input>
+          <el-input
+            type="password"
+            v-model="form.check"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item style="width:300px">
-          <el-button type="primary" @click="submitPass('form')">确 定</el-button>
+          <el-button type="primary" @click="submitPass('form')"
+            >确 定</el-button
+          >
           <el-button @click="dialogFormVisible = false">取 消</el-button>
         </el-form-item>
       </el-form>
@@ -172,31 +219,29 @@ export default {
   methods: {
     handleLogout() {
       console.log(JSON.parse(localStorage.getItem("myview-user")).username);
-      loginout(localStorage.getItem("myview-name")).then(
-        Response => {
-          const resp = Response.data;
-          // console.log(resp);
-          if (resp.status == 200) {
-            //清除本地数据
-            localStorage.removeItem("myview-token");
-            localStorage.removeItem("myview-user");
-            localStorage.removeItem("myview-name");
-            this.$store.commit("setRole", "");
-            this.$router.push("/login");
-            this.$message({
-              message: resp.data,
-              type: "success",
-              duration: 1000 //弹框停留时间
-            });
-          } else {
-            this.$message({
-              message: "登出错误",
-              type: "error",
-              duration: 1000 //弹框停留时间
-            });
-          }
+      loginout(localStorage.getItem("myview-name")).then(Response => {
+        const resp = Response.data;
+        // console.log(resp);
+        if (resp.status == 200) {
+          //清除本地数据
+          localStorage.removeItem("myview-token");
+          localStorage.removeItem("myview-user");
+          localStorage.removeItem("myview-name");
+          this.$store.commit("setRole", "");
+          this.$router.push("/login");
+          this.$message({
+            message: resp.data,
+            type: "success",
+            duration: 1000 //弹框停留时间
+          });
+        } else {
+          this.$message({
+            message: "登出错误",
+            type: "error",
+            duration: 1000 //弹框停留时间
+          });
         }
-      );
+      });
     },
 
     handleDetail() {

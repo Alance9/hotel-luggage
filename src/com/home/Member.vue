@@ -12,10 +12,18 @@
     <el-card style="margin-top: 10px">
       <!-- 搜索 -->
       <!-- :inline="true" 表单一行显示 -->
-      <el-form ref="searchForm" :inline="true" :model="searchMap" style="float:right;">
+      <el-form
+        ref="searchForm"
+        :inline="true"
+        :model="searchMap"
+        style="float:right;"
+      >
         <!-- 重置会看 el-form-item 组件元素的 prop 上是否指定了字段名，指定了才会重置生效 -->
         <el-form-item prop="name">
-          <el-input v-model="searchMap.name" placeholder="行李员名字"></el-input>
+          <el-input
+            v-model="searchMap.name"
+            placeholder="行李员名字"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="phone">
@@ -45,10 +53,16 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="getOrderList" icon="el-icon-search">查询</el-button>
-          <el-button @click="resetForm('searchForm')" icon="el-icon-delete">重置</el-button>
+          <el-button type="primary" @click="getOrderList" icon="el-icon-search"
+            >查询</el-button
+          >
+          <el-button @click="resetForm('searchForm')" icon="el-icon-delete"
+            >重置</el-button
+          >
 
-          <el-button type="primary" @click="handleAdd" plain icon="el-icon-plus">新增</el-button>
+          <el-button type="primary" @click="handleAdd" plain icon="el-icon-plus"
+            >新增</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -56,7 +70,9 @@
     <el-card style="margin-top: 10px">
       <!-- 列表 -->
       <el-table
-        :data="memList.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        :data="
+          memList.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        "
         style="width: 100%"
         height="420"
         :row-class-name="tableRowClassName"
@@ -91,10 +107,14 @@
           <template slot-scope="scope">{{ scope.row.password }}</template>
         </el-table-column> -->
         <el-table-column prop="state" label="是否登录">
-          <template slot-scope="scope">{{ scope.row.loginstate === 1 ? "是" : "否" }}</template>
+          <template slot-scope="scope">{{
+            scope.row.loginstate === 1 ? "是" : "否"
+          }}</template>
         </el-table-column>
         <el-table-column prop="state" label="状态">
-          <template slot-scope="scope">{{ scope.row.state === 1 ? "在职" : "离职" }}</template>
+          <template slot-scope="scope">{{
+            scope.row.state === 1 ? "在职" : "离职"
+          }}</template>
         </el-table-column>
 
         <el-table-column label="操作">
@@ -123,12 +143,26 @@
     </el-card>
 
     <!-- 修改信息 -->
-    <el-dialog title="修改行李员信息" :visible.sync="dialogFormVisible" width="400px">
-      <el-form :model="form" status-icon ref="form" label-width="100px" style="width: 300px">
-        <el-form-item label="工号">{{form.id}}</el-form-item>
+    <el-dialog
+      title="修改行李员信息"
+      :visible.sync="dialogFormVisible"
+      width="400px"
+    >
+      <el-form
+        :model="form"
+        status-icon
+        ref="form"
+        label-width="100px"
+        style="width: 300px"
+      >
+        <el-form-item label="工号">{{ form.id }}</el-form-item>
         <!-- status-icon 输入框反馈图标 -->
         <el-form-item label="姓名" prop="old">
-          <el-input type="input" v-model="form.username" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form.username"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <!--        <el-form-item label="性别">-->
         <!--          <el-radio-group v-model="form.gender">-->
@@ -137,16 +171,32 @@
         <!--          </el-radio-group>-->
         <!--        </el-form-item>-->
         <el-form-item label="联系方式" prop="phone">
-          <el-input type="input" v-model="form.phonenumber" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form.phonenumber"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="账号" prop="userloginname">
-          <el-input type="input" v-model="form.userloginname" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form.userloginname"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="input" v-model="form.password" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form.password"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="酒店" prop="hotel">
-          <el-input type="input" v-model="form.hotel" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="form.hotel"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.state">
@@ -163,7 +213,11 @@
     </el-dialog>
 
     <!-- 添加信息 -->
-    <el-dialog title="添加行李员" :visible.sync="dialogForm1Visible" width="400px">
+    <el-dialog
+      title="添加行李员"
+      :visible.sync="dialogForm1Visible"
+      width="400px"
+    >
       <el-form
         :model="formAdd"
         status-icon
@@ -173,11 +227,19 @@
         style="width: 300px"
       >
         <el-form-item label="工号" prop="id">
-          <el-input type="input" v-model="formAdd.id" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.id"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <!-- status-icon 输入框反馈图标 -->
         <el-form-item label="姓名" prop="username">
-          <el-input type="input" v-model="formAdd.username" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.username"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <!--        <el-form-item label="性别">-->
         <!--          <el-radio-group v-model="form.gender">-->
@@ -186,22 +248,44 @@
         <!--          </el-radio-group>-->
         <!--        </el-form-item>-->
         <el-form-item label="联系方式" prop="phonenumber">
-          <el-input type="input" v-model="formAdd.phonenumber" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.phonenumber"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="登录名" prop="userloginname">
-          <el-input type="input" v-model="formAdd.userloginname" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.userloginname"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="input" v-model="formAdd.password" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.password"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password2">
-          <el-input type="input" v-model="formAdd.password2" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.password2"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="酒店" prop="hotel">
-          <el-input type="input" v-model="formAdd.hotel" autocomplete="off"></el-input>
+          <el-input
+            type="input"
+            v-model="formAdd.hotel"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item style="width:300px">
-          <el-button type="primary" @click="submitAdd('formAdd')">确 定</el-button>
+          <el-button type="primary" @click="submitAdd('formAdd')"
+            >确 定</el-button
+          >
           <el-button @click="dialogFormVisible = false">取 消</el-button>
         </el-form-item>
       </el-form>
@@ -214,7 +298,12 @@
 </template>
 
 <script>
-import { selectAllSuperUser, updateMember, addMember, selectAllReceiver } from "../../api/member";
+import {
+  //selectAllSuperUser,
+  updateMember,
+  addMember,
+  selectAllReceiver
+} from "../../api/member";
 //订单状态
 const orderType = [{ type: "1", name: "男" }, { type: "0", name: "女" }];
 const staticType = [{ type: "1", name: "在职" }, { type: "0", name: "离职" }];
@@ -250,7 +339,7 @@ export default {
         name: "",
         sex: "",
         pass: ""
-      },
+      }
     };
   },
 

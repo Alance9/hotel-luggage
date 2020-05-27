@@ -44,7 +44,7 @@ export function getUserInfo(token) {
     method: "post",
     params: {
       token: token
-    },
+    }
     // header: {
     //   // 已经在request.js里面进行全局设置，也可以在请求里面局部设置其他headers
     //   "Content-Type": "application/x-www-form-urlencoded"

@@ -19,7 +19,7 @@ export default new Vuex.Store({
   actions: {
     add1(context, n) {
       context.commit("increment", n);
-    },
+    }
     // setRole:({commit},roles) =>{
     //   commit('setRole',roles);
     // }

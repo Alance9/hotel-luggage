@@ -12,14 +12,27 @@
     <el-card style="margin-top: 10px">
       <!-- 搜索 -->
       <!-- :inline="true" 表单一行显示 -->
-      <el-form ref="searchForm" :inline="true" :model="searchMap" style="float:right">
+      <el-form
+        ref="searchForm"
+        :inline="true"
+        :model="searchMap"
+        style="float:right"
+      >
         <!-- 重置会看 el-form-item 组件元素的 prop 上是否指定了字段名，指定了才会重置生效 -->
         <el-form-item prop="name">
-          <el-input v-model="searchMap.name" placeholder="客户名" style="width: 120px"></el-input>
+          <el-input
+            v-model="searchMap.name"
+            placeholder="客户名"
+            style="width: 120px"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="name">
-          <el-input v-model="searchMap.name" placeholder="行李员" style="width: 120px"></el-input>
+          <el-input
+            v-model="searchMap.name"
+            placeholder="行李员"
+            style="width: 120px"
+          ></el-input>
         </el-form-item>
 
         <!--         <el-form-item prop="name">
@@ -78,10 +91,16 @@
         </el-form-item>-->
 
         <el-form-item>
-          <el-button type="primary" @click="getOrderList" icon="el-icon-search">查询</el-button>
-          <el-button @click="resetForm('searchForm')" icon="el-icon-delete">重置</el-button>
+          <el-button type="primary" @click="getOrderList" icon="el-icon-search"
+            >查询</el-button
+          >
+          <el-button @click="resetForm('searchForm')" icon="el-icon-delete"
+            >重置</el-button
+          >
 
-          <el-button type="primary" @click="handleAdd" plain icon="el-icon-plus">新增</el-button>
+          <el-button type="primary" @click="handleAdd" plain icon="el-icon-plus"
+            >新增</el-button
+          >
 
           <!-- <el-button type="primary" @click="importData" plain
                                 >批量导入</el-button
@@ -94,7 +113,9 @@
       <!-- 列表 -->
 
       <el-table
-        :data="recList.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        :data="
+          recList.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        "
         style="width: 100%"
         height="420"
         :row-class-name="tableRowClassName"
@@ -128,11 +149,19 @@
         <!-- <el-table-column prop="num" label="行李件数"></el-table-column>
         -->
         <el-table-column prop="luggageSavetime" label="寄存日期" width="120px">
-          <template slot-scope="scope">{{ scope.row.luggageSavetime }}</template>
+          <template slot-scope="scope">{{
+            scope.row.luggageSavetime
+          }}</template>
         </el-table-column>
 
-        <el-table-column prop="luggagesaveforetime" label="预取日期" width="120px">
-          <template slot-scope="scope">{{ scope.row.luggagesavefortime }}</template>
+        <el-table-column
+          prop="luggagesaveforetime"
+          label="预取日期"
+          width="120px"
+        >
+          <template slot-scope="scope">{{
+            scope.row.luggagesavefortime
+          }}</template>
         </el-table-column>
 
         <el-table-column prop="luggageNumber" label="行李件数" width="120px">
@@ -158,9 +187,9 @@
         <el-table-column prop="recievername" label="行李员">
           <template slot-scope="scope">
             {{
-            scope.row.recievername === null || ""
-            ? "无"
-            : scope.row.recievername
+              scope.row.recievername === null || ""
+                ? "无"
+                : scope.row.recievername
             }}
           </template>
         </el-table-column>
@@ -241,7 +270,11 @@
       </el-dialog>-->
 
       <!-- 修改订单信息 -->
-      <el-dialog title="修改订单信息" :visible.sync="dialogFormVisible" class="red_dig">
+      <el-dialog
+        title="修改订单信息"
+        :visible.sync="dialogFormVisible"
+        class="red_dig"
+      >
         <el-form
           class="red_form"
           :model="form"
@@ -253,7 +286,11 @@
             >{{ form.orderid }}
           </el-form-item>-->
           <el-form-item label="姓名" :label-width="formLabelWidth">
-            <el-input v-model="form.recievername" autocomplete="off" style="width:300px"></el-input>
+            <el-input
+              v-model="form.recievername"
+              autocomplete="off"
+              style="width:300px"
+            ></el-input>
           </el-form-item>
           <el-form-item label="性别" :label-width="formLabelWidth">
             <el-radio-group v-model="form.savergender">
@@ -264,11 +301,19 @@
           </el-form-item>
           <el-form-item label="行李件数" :label-width="formLabelWidth">
             <!--                暂无数据-->
-            <el-input-number :min="1" :max="100" v-model="form.luggageNumber"></el-input-number>
+            <el-input-number
+              :min="1"
+              :max="100"
+              v-model="form.luggageNumber"
+            ></el-input-number>
           </el-form-item>
           <el-form-item label="联系方式" :label-width="formLabelWidth">
             <!--                暂无数据-->
-            <el-input autocomplete="off" style="width:300px" v-model="form.phonenumber"></el-input>
+            <el-input
+              autocomplete="off"
+              style="width:300px"
+              v-model="form.phonenumber"
+            ></el-input>
           </el-form-item>
           <el-form-item label="行李描述" :label-width="formLabelWidth">
             <!--                暂无数据-->
@@ -295,15 +340,20 @@
               :span="10"
               :label-width="formLabelWidth"
               style="margin-left:-40px"
-            >行李员：{{ form.recievername }}</el-col>
+              >行李员：{{ form.recievername }}</el-col
+            >
             <!--              暂无数据-->
-            <el-col :span="10" v-if="form.luggageistoken == 1">状态：已领取</el-col>
+            <el-col :span="10" v-if="form.luggageistoken == 1"
+              >状态：已领取</el-col
+            >
             <el-col :span="10" v-else>状态：未领取</el-col>
           </el-form-item>
           <el-form-item style="margin-left:-40px">
-            <el-row>寄存时间：{{form.luggageSavetime}}</el-row>
+            <el-row>寄存时间：{{ form.luggageSavetime }}</el-row>
             <!--              暂无数据-->
-            <el-row v-if="form.luggagegettime">领取时间：{{form.luggagegettime}}</el-row>
+            <el-row v-if="form.luggagegettime"
+              >领取时间：{{ form.luggagegettime }}</el-row
+            >
             <el-row v-else>领取时间：未知</el-row>
           </el-form-item>
           <!-- <el-form-item>
@@ -312,7 +362,9 @@
           </el-form-item>-->
         </el-form>
         <div slot="footer" style="margin-top:-30px">
-          <el-button type="primary" @click="submit('editForm')">确 定</el-button>
+          <el-button type="primary" @click="submit('editForm')"
+            >确 定</el-button
+          >
           <el-button @click="dialogFormVisible = false">取 消</el-button>
         </div>
       </el-dialog>
@@ -320,7 +372,6 @@
       <!-- 查看订单信息 -->
       <el-dialog title="查看订单信息" :visible.sync="dialogForm3Visible">
         <el-form
-
           :model="form"
           :label-position="pos"
           ref="viewForm"
@@ -328,33 +379,37 @@
         >
           <!-- <el-form-item label="编号" :label-width="formLabelWidth">00000001</el-form-item> -->
           <el-form-item style="margin-left:-40px;margin-top:-20px">
-            <el-row>姓名：{{form.savername}}</el-row>
-            <el-row>性别：{{form.savergender}}</el-row>
-            <el-row>联系方式：{{form.phonenumber}}</el-row>
-            <el-row>验证码：{{form.luggagegetcode}}</el-row>
+            <el-row>姓名：{{ form.savername }}</el-row>
+            <el-row>性别：{{ form.savergender }}</el-row>
+            <el-row>联系方式：{{ form.phonenumber }}</el-row>
+            <el-row>验证码：{{ form.luggagegetcode }}</el-row>
             <el-row v-if="form.messagesendstate">短信状态：已发送</el-row>
             <el-row v-else>短信状态：未发送</el-row>
 
-            <el-row>行李件数：{{form.luggageNumber}}</el-row>
-            <el-row>行李描述：{{form.luggageDescribe}}</el-row>
-            <el-row>行李位置：{{form.luggageLocation}}</el-row>
-            <el-row>行李标签：{{form.luggageTag}}</el-row>
-            <el-row>酒店：{{form.luggagehotel}}</el-row>
+            <el-row>行李件数：{{ form.luggageNumber }}</el-row>
+            <el-row>行李描述：{{ form.luggageDescribe }}</el-row>
+            <el-row>行李位置：{{ form.luggageLocation }}</el-row>
+            <el-row>行李标签：{{ form.luggageTag }}</el-row>
+            <el-row>酒店：{{ form.luggagehotel }}</el-row>
             <el-row v-if="form.luggageistoken">状态：已领取</el-row>
             <el-row v-else>状态：未领取</el-row>
           </el-form-item>
 
           <el-form-item style="margin-left:-40px">
-            <el-row>寄存时间：{{form.luggageSavetime}}</el-row>
-            <el-row>预取时间：{{form.luggagesavefortime}}</el-row>
-            <el-row v-if="form.luggagegettime">领取时间：{{form.luggagegettime}}</el-row>
+            <el-row>寄存时间：{{ form.luggageSavetime }}</el-row>
+            <el-row>预取时间：{{ form.luggagesavefortime }}</el-row>
+            <el-row v-if="form.luggagegettime"
+              >领取时间：{{ form.luggagegettime }}</el-row
+            >
             <el-row v-else>领取时间：未知</el-row>
-            <el-row>寄存者：{{form.recievername}}</el-row>
-            <el-row>领取者：{{form.givername}}</el-row>
+            <el-row>寄存者：{{ form.recievername }}</el-row>
+            <el-row>领取者：{{ form.givername }}</el-row>
           </el-form-item>
         </el-form>
         <div slot="footer">
-          <el-button type="primary" @click="dialogForm3Visible = false">关 闭</el-button>
+          <el-button type="primary" @click="dialogForm3Visible = false"
+            >关 闭</el-button
+          >
         </div>
       </el-dialog>
 
@@ -380,7 +435,7 @@
 </template>
 
 <script>
-import { SelectAllOrder, updateOrder, getluggage } from "../../api/order";
+import { SelectAllOrder, getluggage } from "../../api/order";
 //订单状态
 const orderType = [
   { luggageistoken: "0", name: "未领取" },

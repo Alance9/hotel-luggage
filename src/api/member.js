@@ -16,7 +16,7 @@ export default {
 export function selectAllReceiver() {
   return request({
     url: "http://luggage.gz2vip.idcfengye.com/user/selectAllReceiver",
-    method: "post",
+    method: "post"
   });
 }
 
@@ -32,25 +32,25 @@ export function updateMember(info) {
 // 添加用户
 export function addMember(info) {
   return request({
-    url: 'http://luggage.gz2vip.idcfengye.com/user/uregister',
-    method: 'post',
+    url: "http://luggage.gz2vip.idcfengye.com/user/uregister",
+    method: "post",
     data: info
-  })
+  });
 }
 
 // 管理员获取
 export function selectAllSuperUser() {
   return request({
     url: "http://luggage.gz2vip.idcfengye.com/user/selectAllSuperUser",
-    method: "post",
+    method: "post"
   });
 }
 
 // 用户名搜索
 export function addSuperUser(info) {
   return request({
-    url: 'http://luggage.gz2vip.idcfengye.com/user/selectUsername',
-    method: 'post',
+    url: "http://luggage.gz2vip.idcfengye.com/user/selectUsername",
+    method: "post",
     data: info
-  })
+  });
 }

@@ -27,7 +27,10 @@
         </el-form-item>
 
         <el-form-item label="联系方式" class="input" prop="phonenumber">
-          <el-input v-model="depList.phonenumber" style="width:300px"></el-input>
+          <el-input
+            v-model="depList.phonenumber"
+            style="width:300px"
+          ></el-input>
         </el-form-item>
 
         <el-form-item label="性别" prop="gender">
@@ -39,12 +42,19 @@
         </el-form-item>
 
         <el-form-item label="行李件数" prop="number">
-          <el-input-number v-model="depList.number" :min="1" :max="100"></el-input-number>
+          <el-input-number
+            v-model="depList.number"
+            :min="1"
+            :max="100"
+          ></el-input-number>
           <!-- <el-input v-model="depList.number" style="width:300px"></el-input> -->
         </el-form-item>
 
         <el-form-item label="行李描述" prop="luggagedescribe">
-          <el-input type="textarea" v-model="depList.luggagedescribe"></el-input>
+          <el-input
+            type="textarea"
+            v-model="depList.luggagedescribe"
+          ></el-input>
         </el-form-item>
 
         <el-form-item label="预取日期" prop="saveforetime">
@@ -71,7 +81,8 @@
             type="primary"
             @click="addOrder('depForm')"
             style="width: 300px;margin-top:10px"
-          >提交</el-button>
+            >提交</el-button
+          >
           <!-- <el-button type="info" style="width: 100px">取消</el-button> -->
         </el-form-item>
       </el-form>
@@ -93,7 +104,12 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" style="width:330px" @click="findOrder('recForm')">领 取</el-button>
+          <el-button
+            type="primary"
+            style="width:330px"
+            @click="findOrder('recForm')"
+            >领 取</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -103,7 +119,11 @@
       <h4 style="margin-top: -10px">最近订单状况</h4>
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="phone" label="联系方式" width="150"></el-table-column>
+        <el-table-column
+          prop="phone"
+          label="联系方式"
+          width="150"
+        ></el-table-column>
         <el-table-column prop="num" label="行李数"></el-table-column>
         <el-table-column prop="des_p" label="寄存人"></el-table-column>
         <el-table-column prop="static" label="状态"></el-table-column>
@@ -113,7 +133,8 @@
             icon="el-icon-view"
             size="small"
             @click="dialogForm3Visible = true"
-          >查看</el-button>
+            >查看</el-button
+          >
         </el-table-column>
       </el-table>
       <p></p>
@@ -125,35 +146,46 @@
       <el-form :model="recList" :label-position="pos" label-width="60px">
         <!-- <el-form-item label="编号" :label-width="formLabelWidth"></el-form-item> -->
         <el-form-item style="margin-left:-40px;margin-top:-30px">
-          <el-row>姓名：{{recList.savername}}</el-row>
-          <el-row>性别：{{recList.savergender}}</el-row>
-          <el-row>联系方式：{{recList.phonenumber}}</el-row>
-          <el-row>验证码：{{recList.getcode}}</el-row>
+          <el-row>姓名：{{ recList.savername }}</el-row>
+          <el-row>性别：{{ recList.savergender }}</el-row>
+          <el-row>联系方式：{{ recList.phonenumber }}</el-row>
+          <el-row>验证码：{{ recList.getcode }}</el-row>
           <el-row v-if="recList.getcode">短信状态：已发送</el-row>
           <el-row v-else>短信状态：未发送</el-row>
-       
-          <el-row>行李件数：{{recList.number}}</el-row>
-          <el-row>行李描述：{{recList.describe}}</el-row>
-          <el-row>行李位置：{{recList.location}}</el-row>
-          <el-row>行李标签：{{recList.tag}}</el-row>
-          <el-row>酒店：{{recList.hotel}}</el-row>
+
+          <el-row>行李件数：{{ recList.number }}</el-row>
+          <el-row>行李描述：{{ recList.describe }}</el-row>
+          <el-row>行李位置：{{ recList.location }}</el-row>
+          <el-row>行李标签：{{ recList.tag }}</el-row>
+          <el-row>酒店：{{ recList.hotel }}</el-row>
           <el-row v-if="recList.istoken">状态：已领取</el-row>
           <el-row v-else>状态：未领取</el-row>
         </el-form-item>
 
         <el-form-item style="margin-left:-40px">
-          <el-row>寄存时间：{{recList.savetime}}</el-row>
-          <el-row>预取时间：{{recList.saveforetime}}</el-row>
-          <el-row v-if="recList.gettime">领取时间：{{recList.gettime}}</el-row>
+          <el-row>寄存时间：{{ recList.savetime }}</el-row>
+          <el-row>预取时间：{{ recList.saveforetime }}</el-row>
+          <el-row v-if="recList.gettime"
+            >领取时间：{{ recList.gettime }}</el-row
+          >
           <el-row v-else>领取时间：未知</el-row>
-          <el-row>寄存者：{{recList.receivername}}</el-row>
-          <el-row v-if="recList.istoken">领取者：{{recList.giverName}}</el-row>
+          <el-row>寄存者：{{ recList.receivername }}</el-row>
+          <el-row v-if="recList.istoken"
+            >领取者：{{ recList.giverName }}</el-row
+          >
           <el-row v-else>领取者：暂无</el-row>
         </el-form-item>
       </el-form>
       <div slot="footer" style="margin-top:-30px">
-        <el-button type="primary" @click="recieveOrder(recList.getcode)" v-if="!recList.istoken">领 取</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">关 闭</el-button>
+        <el-button
+          type="primary"
+          @click="recieveOrder(recList.getcode)"
+          v-if="!recList.istoken"
+          >领 取</el-button
+        >
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >关 闭</el-button
+        >
       </div>
     </el-dialog>
   </div>
